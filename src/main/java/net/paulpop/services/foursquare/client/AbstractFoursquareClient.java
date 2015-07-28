@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
  *
  * Created by popp on 28/07/15.
  */
- public abstract class AbstractFoursquareClient {
+abstract class AbstractFoursquareClient {
 
     @Value("${4sq.endpoint}")
     protected String endpoint;
@@ -21,9 +21,12 @@ import org.springframework.beans.factory.annotation.Value;
     @Value("${4sq.credentials.clientsecret}")
     protected String clientSecret;
 
+    @Value("${4sq.api.version}")
+    protected String apiVersion;
+
     /**
      * Enforce client initialization that is only run once, preferably by using {@link javax.annotation.PostConstruct}
      * @throws Exception
      */
-    protected abstract void init() throws Exception;
+    abstract void init() throws Exception;
 }
