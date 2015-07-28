@@ -44,7 +44,11 @@ public class JsonSerDeser<T> {
      * @return
      */
     public JsonElement deserialize(String source) {
-        return parser.parse(source);
+        try {
+            return parser.parse(source);
+        } catch (JsonSyntaxException e) {
+            return JsonNull.INSTANCE;
+        }
     }
 
 }
