@@ -55,4 +55,10 @@ public class VenueAddress {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Address: " + address + " | " +
+                "City: " + city + " | " +
+                "Country: " + country;
+    }
 }

@@ -6,6 +6,9 @@ This application is built as both a usable REST API (JSON only at this stage) bu
 I would not do this normally and have them separated, but I felt that just building this for a website would ruin the fun
 for me so I have also built it for developers who want to be able to integrate with it.
 
+Also, a lot of things are extremely extensible and I have used a lot of interfaces/abstract classes together with generics
+just to showcase how I would normally build this - despite the fact that I know it's over-engineered for this particular case :)
+
 Things I have used for the integration:
 * **Spring Boot** - I have used Spring Boot for minimal application configuration in order to have the application running quickly.
 * **Spring** - Spring core and context to make use of Spring's DI and IoC.
@@ -36,4 +39,5 @@ Once the application is started, you can go to:
 For the sake of this exercise and time, I have only provided unit tests which are run at build time.
 I have used TestNG as my main testing framework but also made use of Mockito and PowerMock for mocking.
 
-**Note**: I have only wrote unit tests for classes that I thought are worth it - skipped POJOs/Builders and the main Application class.
+**Note**: I have only wrote unit tests for classes that I thought are worth it.
+I skipped POJOs/Builders and the main Application class. Also, the UI bit is not unit tested because of lack of time.

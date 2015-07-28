@@ -36,7 +36,7 @@ final class VenueJsonMapper implements JsonMapper<JsonObject, List<Venue>> {
         try {
             List<Venue> venues = Lists.newArrayList();
 
-            final JsonArray itemsList = from.get("response").getAsJsonObject().get("groups").getAsJsonArray().get(0).getAsJsonObject().get("items").getAsJsonArray();
+            JsonArray itemsList = from.get("response").getAsJsonObject().get("groups").getAsJsonArray().get(0).getAsJsonObject().get("items").getAsJsonArray();
             itemsList.forEach(element -> {
                 JsonObject venue = element.getAsJsonObject().get("venue").getAsJsonObject();
                 JsonObject category = venue.get("categories").getAsJsonArray().get(0).getAsJsonObject();

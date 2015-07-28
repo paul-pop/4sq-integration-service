@@ -45,4 +45,9 @@ public class VenueContactDetails {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Phone Number: " + phoneNumber + " | " +
+                "Twitter: @" + twitterHandle;
+    }
 }
