@@ -23,12 +23,25 @@ public class VenuesController extends AbstractController<VenuesResponse> {
                           @RequestParam("radius") Integer radius,
                           @RequestParam("limit") Integer limit) {
 
+        VenuesResponse response;
         try {
-            return serialize(service.explore(place, radius, limit));
+            response = service.explore(place, radius, limit);
         } catch (FoursquareException e) {
             System.err.println("Exception occurred: " + e.toString());
-            return null;
+
+            response = generateErrorResponse(e.getResponseCode(), e.getErrorCode(), e.getErrorDetail());
         }
+
+        return serialize(response);
+    }
+
+    @Override
+    protected VenuesResponse generateErrorResponse(int responseCode, String errorCode, String errorDetail) {
+        VenuesResponse response = new VenuesResponse();
+        response.setResponseCode(responseCode);
+        response.setErrorCode(errorCode);
+        response.setErrorDetail(errorDetail);
+        return response;
     }
 
 }

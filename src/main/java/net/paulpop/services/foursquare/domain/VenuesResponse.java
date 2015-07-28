@@ -10,8 +10,8 @@ import java.util.List;
 public class VenuesResponse {
 
     // Mandatory fields
-    private List<Venue> venues;
     private int responseCode;
+    private List<Venue> venues;
 
     // Optional fields - only in case of error
     private String errorCode;

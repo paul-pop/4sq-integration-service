@@ -23,4 +23,6 @@ abstract class AbstractController<T> {
         return jsonSerDeser.serialize(source);
     }
 
+    protected abstract T generateErrorResponse(int responseCode, String errorCode, String errorDetail);
+
 }

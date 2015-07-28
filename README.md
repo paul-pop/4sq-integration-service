@@ -27,6 +27,11 @@ The application can be started:
 java -jar target/4sq-integration-service-1.0.jar
 ```
 
+## Run
+Once the application is started, you can go to:
+* **UI**: http://localhost:8080/venues/search
+* **REST API** sample call: http://localhost:8080/venues/search/rest?place=London&radius=100&limit=10
+
 ## Tests
 For the sake of this exercise and time, I have only provided unit tests which are run at build time.
 I have used TestNG as my main testing framework but also made use of Mockito and PowerMock for mocking.

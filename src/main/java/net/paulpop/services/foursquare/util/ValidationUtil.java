@@ -7,6 +7,8 @@ package net.paulpop.services.foursquare.util;
  */
 public final class ValidationUtil {
 
+    public static final String EMPTY_STRING = "";
+
     // Should not be instantiated as it will only contain static methods - this is to avoid invalid invocations
     private ValidationUtil() {}
 
@@ -21,6 +23,16 @@ public final class ValidationUtil {
         } else {
             return a;
         }
+    }
+
+    /**
+     * Nvl function that takes in a given value and a default which is returned if the value is null
+     * @param a
+     * @param b
+     * @return T
+     */
+    public static <T> T nvl(T a, T b) {
+        return a == null ? b : a;
     }
 
 }

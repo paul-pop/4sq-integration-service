@@ -20,6 +20,7 @@
 
         <jetty.client.version>9.2.12.v20150709</jetty.client.version>
         <gson.version>2.3.1</gson.version>
+        <guava.version>18.0</guava.version>
 
         <spring.version>4.1.6.RELEASE</spring.version>
         <spring.vaadin.version>1.0.0.beta3</spring.vaadin.version>
@@ -125,6 +126,13 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
+        </dependency>
+
+        <!-- Guava for common utils -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${guava.version}</version>
         </dependency>
     </dependencies>
 

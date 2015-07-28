@@ -13,8 +13,15 @@ import java.util.List;
  * Created by popp on 28/07/15.
  */
 @Component
-public class VenueJsonMapper implements JsonMapper<JsonObject, List<Venue>> {
+final class VenueJsonMapper implements JsonMapper<JsonObject, List<Venue>> {
 
+    /**
+     * Map the initial {@link JsonObject} obtained after deserialization to our current model
+     *
+     * @param from
+     * @return
+     * @throws FoursquareException
+     */
     @Override
     public List<Venue> map(JsonObject from) throws FoursquareException {
         return null;
