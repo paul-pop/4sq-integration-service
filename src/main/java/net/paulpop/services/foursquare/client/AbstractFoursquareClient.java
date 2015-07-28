@@ -26,6 +26,7 @@ abstract class AbstractFoursquareClient {
 
     /**
      * Enforce client initialization that is only run once, preferably by using {@link javax.annotation.PostConstruct}
+     *
      * @throws Exception
      */
     abstract void init() throws Exception;

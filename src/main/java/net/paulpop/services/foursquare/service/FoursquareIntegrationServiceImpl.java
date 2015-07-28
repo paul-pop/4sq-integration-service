@@ -1,7 +1,9 @@
 package net.paulpop.services.foursquare.service;
 
+import com.google.gson.JsonObject;
 import net.paulpop.services.foursquare.client.JettyFoursquareClient;
 import net.paulpop.services.foursquare.domain.VenuesResponse;
+import net.paulpop.services.foursquare.serialization.JsonSerDeser;
 import net.paulpop.services.foursquare.util.FoursquareOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,17 +15,33 @@ import org.springframework.stereotype.Component;
  * Created by popp on 28/07/15.
  */
 @Component
-public class FoursquareIntegrationServiceImpl implements FoursquareIntegrationService {
+final class FoursquareIntegrationServiceImpl implements FoursquareIntegrationService {
 
     @Autowired
     private JettyFoursquareClient client;
 
+    @Autowired
+    private JsonSerDeser<VenuesResponse> jsonSerDeser;
+
     @Override
     public VenuesResponse explore(String near, Integer radius, Integer limit) throws FoursquareException {
-        final String result = client.call(FoursquareOperation.EXPLORE, near, radius, limit);
+        // We use partial deserialization so we don't have to create object in our codebase for
+        // the entire Foursquare model
+        String result = client.call(FoursquareOperation.EXPLORE, near, radius, limit);
+        JsonObject json = jsonSerDeser.deserialize(result).getAsJsonObject();
 
-        // TODO deserialize this into a VenuesResponse
+        // Get the meta definition which contains response/error code information
+        JsonObject status = json.get("meta").getAsJsonObject();
+        if (status.get("code").getAsInt() != 200) { // invalid request
+            throw new FoursquareException(status.get("code").getAsInt(),
+                    status.get("errorType").getAsString().toUpperCase(),
+                    status.get("errorDetail").getAsString());
+        }
+
+        // This means the response was OK and deserialization passed so we return 200
         VenuesResponse response = new VenuesResponse();
+        response.setResponseCode(200);
+        response.setVenues(null);
         return response;
     }
 
