@@ -56,13 +56,4 @@ public class FoursquareException extends Exception {
         result = 31 * result + (errorDetail != null ? errorDetail.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "FoursquareException{" +
-                "responseCode=" + responseCode +
-                ", errorCode='" + errorCode + '\'' +
-                ", errorDetail='" + errorDetail + '\'' +
-                '}';
-    }
 }
