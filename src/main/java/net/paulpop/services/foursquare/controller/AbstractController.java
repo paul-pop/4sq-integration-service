@@ -1,5 +1,6 @@
 package net.paulpop.services.foursquare.controller;
 
+import net.paulpop.services.foursquare.exception.FoursquareException;
 import net.paulpop.services.foursquare.serialization.JsonSerDeser;
 import net.paulpop.services.foursquare.service.FoursquareIntegrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,6 @@ abstract class AbstractController<T> {
         return jsonSerDeser.serialize(source);
     }
 
-    protected abstract T generateErrorResponse(int responseCode, String errorCode, String errorDetail);
+    protected abstract T generateErrorResponse(FoursquareException ex);
 
 }

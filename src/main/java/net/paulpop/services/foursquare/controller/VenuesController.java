@@ -1,7 +1,7 @@
 package net.paulpop.services.foursquare.controller;
 
 import net.paulpop.services.foursquare.domain.VenuesResponse;
-import net.paulpop.services.foursquare.service.FoursquareException;
+import net.paulpop.services.foursquare.exception.FoursquareException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,20 +27,20 @@ public class VenuesController extends AbstractController<VenuesResponse> {
         try {
             response = service.explore(place, radius, limit);
         } catch (FoursquareException e) {
-            System.err.println("Exception occurred: " + e.toString());
+            System.err.println(e); // seeing we don't have logging, we'll just stderr it
 
-            response = generateErrorResponse(e.getResponseCode(), e.getErrorCode(), e.getErrorDetail());
+            response = generateErrorResponse(e);
         }
 
         return serialize(response);
     }
 
     @Override
-    protected VenuesResponse generateErrorResponse(int responseCode, String errorCode, String errorDetail) {
+    protected VenuesResponse generateErrorResponse(FoursquareException e) {
         VenuesResponse response = new VenuesResponse();
-        response.setResponseCode(responseCode);
-        response.setErrorCode(errorCode);
-        response.setErrorDetail(errorDetail);
+        response.setResponseCode(e.getResponseCode());
+        response.setErrorCode(e.getErrorCode());
+        response.setErrorDetail(e.getErrorDetail());
         return response;
     }
 

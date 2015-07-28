@@ -1,6 +1,7 @@
 package net.paulpop.services.foursquare.service;
 
 import net.paulpop.services.foursquare.domain.VenuesResponse;
+import net.paulpop.services.foursquare.exception.FoursquareException;
 
 /**
  * This interface defines all the operations called on the Foursquare API by our service.

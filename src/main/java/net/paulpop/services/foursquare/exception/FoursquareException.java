@@ -1,4 +1,4 @@
-package net.paulpop.services.foursquare.service;
+package net.paulpop.services.foursquare.exception;
 
 /**
  * Custom Foursquare exception that contains error information.
@@ -11,11 +11,13 @@ public class FoursquareException extends Exception {
     private String errorCode;
     private String errorDetail;
 
-    public FoursquareException(String message, Throwable cause) {
+    // protected because only the factory can instantiate new exceptions
+    protected FoursquareException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public FoursquareException(int responseCode, String errorCode, String errorDetail) {
+    // protected because only the factory can instantiate new exceptions
+    protected FoursquareException(int responseCode, String errorCode, String errorDetail) {
         super("FoursquareException thrown with: responseCode=" + responseCode + ",errorCode=" + errorCode + ",errorDetail=" + errorDetail);
 
         this.responseCode = responseCode;

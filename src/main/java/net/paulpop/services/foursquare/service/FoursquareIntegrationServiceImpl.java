@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import net.paulpop.services.foursquare.client.JettyFoursquareClient;
 import net.paulpop.services.foursquare.domain.Venue;
 import net.paulpop.services.foursquare.domain.VenuesResponse;
+import net.paulpop.services.foursquare.exception.FoursquareException;
+import net.paulpop.services.foursquare.exception.FoursquareExceptionFactory;
 import net.paulpop.services.foursquare.serialization.JsonMapper;
 import net.paulpop.services.foursquare.serialization.JsonSerDeser;
 import net.paulpop.services.foursquare.util.FoursquareOperation;
@@ -42,7 +44,8 @@ final class FoursquareIntegrationServiceImpl implements FoursquareIntegrationSer
         // Get the meta definition which contains response/error code information
         JsonObject status = json.get("meta").getAsJsonObject();
         if (status.get("code").getAsInt() != 200) { // invalid request
-            throw new FoursquareException(status.get("code").getAsInt(),
+            throw FoursquareExceptionFactory.getInstance().create(
+                    status.get("code").getAsInt(),
                     status.get("errorType").getAsString().toUpperCase(),
                     status.get("errorDetail").getAsString());
         }

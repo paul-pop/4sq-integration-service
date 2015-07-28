@@ -1,6 +1,7 @@
 package net.paulpop.services.foursquare.client;
 
-import net.paulpop.services.foursquare.service.FoursquareException;
+import net.paulpop.services.foursquare.exception.FoursquareException;
+import net.paulpop.services.foursquare.exception.FoursquareExceptionFactory;
 import net.paulpop.services.foursquare.util.FoursquareOperation;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
@@ -63,7 +64,7 @@ public final class JettyFoursquareClient extends AbstractFoursquareClient {
                     .send();
             return response.getContentAsString();
         } catch (IllegalArgumentException | InterruptedException | TimeoutException | ExecutionException e) {
-            throw new FoursquareException("An error occurred while calling the Foursquare API", e);
+            throw FoursquareExceptionFactory.getInstance().create("An error occurred while calling the Foursquare API", e);
         }
     }
 

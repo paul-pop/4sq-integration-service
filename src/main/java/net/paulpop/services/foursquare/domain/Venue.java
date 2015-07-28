@@ -5,7 +5,7 @@ package net.paulpop.services.foursquare.domain;
  */
 public class Venue {
 
-    private String id; // we just keep this in case we want to have a unique identifier but we won't be using it
+    private String id;
     private String name;
     private String category;
     private VenueContactDetails contactDetails;
