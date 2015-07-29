@@ -32,8 +32,8 @@ java -jar target/4sq-integration-service-1.0.jar
 
 ## Run
 Once the application is started, you can go to:
-* **UI**: http://localhost:8080/venues/search
-* **REST API** sample call: http://localhost:8080/venues/search/rest?place=London&radius=100&limit=10
+* **UI**: ```http://localhost:8080/venues/search```
+* **REST API** sample call: ```http://localhost:8080/venues/search/rest?place=London&radius=100&limit=10```
 
 ## Tests
 For the sake of this exercise and time, I have only provided unit tests which are run at build time.
