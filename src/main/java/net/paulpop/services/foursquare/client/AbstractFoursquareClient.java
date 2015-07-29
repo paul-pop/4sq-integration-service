@@ -25,9 +25,16 @@ abstract class AbstractFoursquareClient {
     protected String apiVersion;
 
     /**
-     * Enforce client initialization that is only run once, preferably by using {@link javax.annotation.PostConstruct}
+     * Enforce client startup, preferably by using {@link javax.annotation.PostConstruct}
      *
      * @throws Exception
      */
-    abstract void init() throws Exception;
+    abstract void start() throws Exception;
+
+    /**
+     * Enforce client termination, preferably by using {@link javax.annotation.PreDestroy}
+     *
+     * @throws Exception
+     */
+    abstract void stop() throws Exception;
 }

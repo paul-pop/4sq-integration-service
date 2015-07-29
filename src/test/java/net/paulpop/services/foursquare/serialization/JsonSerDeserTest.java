@@ -7,7 +7,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 /**
  * Created by popp on 28/07/15.
@@ -24,6 +25,13 @@ public class JsonSerDeserTest {
         initMocks(this);
 
         obj = new StubObject(1, "X");
+    }
+
+    @Test
+    public void testSerialize_O1K() {
+        String result = jsonSerDeser.serialize(obj);
+
+        assertEquals(result, StubObject.OBJ);
     }
 
     @Test
@@ -67,7 +75,7 @@ public class JsonSerDeserTest {
     public void testPartialDeserialize_FAIL() {
         JsonElement result = jsonSerDeser.deserialize("");
 
-        assertTrue(result instanceof JsonNull);
+        assertEquals(result, JsonNull.INSTANCE);
     }
 
     /**

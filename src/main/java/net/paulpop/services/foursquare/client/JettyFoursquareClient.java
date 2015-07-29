@@ -10,6 +10,7 @@ import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -28,7 +29,7 @@ public final class JettyFoursquareClient extends AbstractFoursquareClient {
 
     @Override
     @PostConstruct
-    void init() throws Exception {
+    void start() throws Exception {
         // Required for calls over HTTPS
         SslContextFactory sslContextFactory = new SslContextFactory();
 
@@ -36,6 +37,12 @@ public final class JettyFoursquareClient extends AbstractFoursquareClient {
         httpClient = new HttpClient(sslContextFactory);
         httpClient.setFollowRedirects(false); // bypass redirects
         httpClient.start(); // working with default executor - QueuedThreadPool of 200 threads
+    }
+
+    @Override
+    @PreDestroy
+    void stop() throws Exception {
+        httpClient.stop();
     }
 
     /**
@@ -59,8 +66,8 @@ public final class JettyFoursquareClient extends AbstractFoursquareClient {
                     .param("client_secret", clientSecret)
                     .param("v", apiVersion)
                     .param("near", mandatory(near))
-                    .param("radius", String.valueOf(radius))
-                    .param("limit", String.valueOf(limit))
+                    .param("radius", String.valueOf(mandatory(radius)))
+                    .param("limit", String.valueOf(mandatory(limit)))
                     .send();
             return response.getContentAsString();
         } catch (IllegalArgumentException | InterruptedException | TimeoutException | ExecutionException e) {

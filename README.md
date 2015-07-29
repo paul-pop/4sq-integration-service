@@ -37,7 +37,8 @@ Once the application is started, you can go to:
 
 ## Tests
 For the sake of this exercise and time, I have only provided unit tests which are run at build time.
-I have used TestNG as my main testing framework but also made use of Mockito and PowerMock for mocking.
+I have used TestNG as my main testing framework but also made use of Mockito and PowerMock for mocking and Spring Test
+for Reflection Utils - setting values to @Value annotated fields.
 
 **Note**: I have only wrote unit tests for classes that I thought are worth it.
 I skipped POJOs/Builders and the main Application class. Also, the UI bit is not unit tested because of lack of time.
