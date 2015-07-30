@@ -8,10 +8,9 @@ public class Venue {
     private String id;
     private String name;
     private String category;
+    private boolean isOpen;
     private VenueContactDetails contactDetails;
     private VenueAddress address;
-    private boolean isOpen;
-    private String url;
 
     public String getId() {
         return id;
@@ -61,14 +60,6 @@ public class Venue {
         this.isOpen = isOpen;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -83,7 +74,6 @@ public class Venue {
             return false;
         if (id != null ? !id.equals(venue.id) : venue.id != null) return false;
         if (name != null ? !name.equals(venue.name) : venue.name != null) return false;
-        if (url != null ? !url.equals(venue.url) : venue.url != null) return false;
 
         return true;
     }
@@ -96,7 +86,6 @@ public class Venue {
         result = 31 * result + (contactDetails != null ? contactDetails.hashCode() : 0);
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (isOpen ? 1 : 0);
-        result = 31 * result + (url != null ? url.hashCode() : 0);
         return result;
     }
 }

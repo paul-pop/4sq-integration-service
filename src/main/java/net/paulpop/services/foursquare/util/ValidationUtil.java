@@ -1,5 +1,7 @@
 package net.paulpop.services.foursquare.util;
 
+import com.google.gson.JsonElement;
+
 /**
  * Utility class used for simple validation.
  *
@@ -33,6 +35,15 @@ public final class ValidationUtil {
      */
     public static <T> T nvl(T a, T b) {
         return a == null ? b : a;
+    }
+
+    /**
+     * Validates a JsonElement and gets the string value out of it
+     * @param jsonElement
+     * @return
+     */
+    public static String validate(JsonElement jsonElement) {
+        return jsonElement == null ? EMPTY_STRING : jsonElement.getAsString();
     }
 
 }

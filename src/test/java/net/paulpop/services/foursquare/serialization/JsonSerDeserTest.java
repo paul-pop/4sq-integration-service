@@ -73,7 +73,7 @@ public class JsonSerDeserTest {
 
     @Test
     public void testPartialDeserialize_FAIL() {
-        JsonElement result = jsonSerDeser.deserialize("");
+        JsonElement result = jsonSerDeser.deserialize("invalid JSON");
 
         assertEquals(result, JsonNull.INSTANCE);
     }

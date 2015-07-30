@@ -9,7 +9,7 @@ public class VenueAddressBuilder {
 
     private String country;
     private String city;
-    private String address;
+    private String street;
 
     public VenueAddressBuilder withCountry(String country) {
         this.country = country;
@@ -21,8 +21,8 @@ public class VenueAddressBuilder {
         return this;
     }
 
-    public VenueAddressBuilder withAddress(String address) {
-        this.address = address;
+    public VenueAddressBuilder withStreet(String street) {
+        this.street = street;
         return this;
     }
 
@@ -30,7 +30,7 @@ public class VenueAddressBuilder {
         VenueAddress venueAddress = new VenueAddress();
         venueAddress.setCountry(country);
         venueAddress.setCity(city);
-        venueAddress.setAddress(address);
+        venueAddress.setStreet(street);
         return venueAddress;
     }
 }

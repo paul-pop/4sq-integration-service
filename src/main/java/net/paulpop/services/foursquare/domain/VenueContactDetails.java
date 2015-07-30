@@ -5,23 +5,23 @@ package net.paulpop.services.foursquare.domain;
  */
 public class VenueContactDetails {
 
-    private String phoneNumber;
-    private String twitterHandle;
+    private String phone;
+    private String website;
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getTwitterHandle() {
-        return twitterHandle;
+    public String getWebsite() {
+        return website;
     }
 
-    public void setTwitterHandle(String twitterHandle) {
-        this.twitterHandle = twitterHandle;
+    public void setWebsite(String website) {
+        this.website = website;
     }
 
     @Override
@@ -31,8 +31,8 @@ public class VenueContactDetails {
 
         VenueContactDetails that = (VenueContactDetails) o;
 
-        if (phoneNumber != null ? !phoneNumber.equals(that.phoneNumber) : that.phoneNumber != null) return false;
-        if (twitterHandle != null ? !twitterHandle.equals(that.twitterHandle) : that.twitterHandle != null)
+        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
+        if (website != null ? !website.equals(that.website) : that.website != null)
             return false;
 
         return true;
@@ -40,14 +40,8 @@ public class VenueContactDetails {
 
     @Override
     public int hashCode() {
-        int result = phoneNumber != null ? phoneNumber.hashCode() : 0;
-        result = 31 * result + (twitterHandle != null ? twitterHandle.hashCode() : 0);
+        int result = phone != null ? phone.hashCode() : 0;
+        result = 31 * result + (website != null ? website.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Phone Number: " + phoneNumber + " | " +
-                "Twitter: @" + twitterHandle;
     }
 }

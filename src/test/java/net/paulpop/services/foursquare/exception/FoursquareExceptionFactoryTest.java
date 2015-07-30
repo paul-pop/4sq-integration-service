@@ -23,12 +23,12 @@ public class FoursquareExceptionFactoryTest {
         initMocks(this);
     }
 
-    @Test(expectedExceptions = FoursquareException.class)
+    @Test(expectedExceptions = FoursquareException.class, expectedExceptionsMessageRegExp = "Exception")
     public void testCreateException_Simple() throws Exception {
         throw factory.create("Exception", new RuntimeException());
     }
 
-    @Test(expectedExceptions = FoursquareException.class)
+    @Test(expectedExceptions = FoursquareException.class, expectedExceptionsMessageRegExp = ".*FoursquareException.*")
     public void testCreateException_Detailed() throws Exception {
         throw factory.create(400, "BAD_REQUEST", "Details");
     }

@@ -7,7 +7,7 @@ public class VenueAddress {
 
     private String country;
     private String city;
-    private String address;
+    private String street;
 
     public String getCountry() {
         return country;
@@ -25,12 +25,12 @@ public class VenueAddress {
         this.city = city;
     }
 
-    public String getAddress() {
-        return address;
+    public String getStreet() {
+        return street;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreet(String street) {
+        this.street = street;
     }
 
     @Override
@@ -40,7 +40,7 @@ public class VenueAddress {
 
         VenueAddress that = (VenueAddress) o;
 
-        if (address != null ? !address.equals(that.address) : that.address != null) return false;
+        if (street != null ? !street.equals(that.street) : that.street != null) return false;
         if (city != null ? !city.equals(that.city) : that.city != null) return false;
         if (country != null ? !country.equals(that.country) : that.country != null) return false;
 
@@ -51,14 +51,7 @@ public class VenueAddress {
     public int hashCode() {
         int result = country != null ? country.hashCode() : 0;
         result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
+        result = 31 * result + (street != null ? street.hashCode() : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Address: " + address + " | " +
-                "City: " + city + " | " +
-                "Country: " + country;
     }
 }

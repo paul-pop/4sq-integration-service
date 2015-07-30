@@ -11,13 +11,13 @@ public class FoursquareException extends Exception {
     private String errorCode;
     private String errorDetail;
 
-    // protected because only the factory can instantiate new exceptions
-    protected FoursquareException(String message, Throwable cause) {
+    // default modifier because only the factory can instantiate new exceptions
+    FoursquareException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    // protected because only the factory can instantiate new exceptions
-    protected FoursquareException(int responseCode, String errorCode, String errorDetail) {
+    // default modifier because only the factory can instantiate new exceptions
+    FoursquareException(int responseCode, String errorCode, String errorDetail) {
         super("FoursquareException thrown with: responseCode=" + responseCode + ",errorCode=" + errorCode + ",errorDetail=" + errorDetail);
 
         this.responseCode = responseCode;

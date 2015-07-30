@@ -2,7 +2,6 @@ package net.paulpop.services.foursquare.serialization;
 
 import com.google.common.collect.Lists;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.paulpop.services.foursquare.domain.Venue;
 import net.paulpop.services.foursquare.domain.builder.VenueAddressBuilder;
@@ -14,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static net.paulpop.services.foursquare.util.ValidationUtil.EMPTY_STRING;
+import static net.paulpop.services.foursquare.util.ValidationUtil.validate;
 
 /**
  * Specific mapper used for deserializing Foursquare API venue information.
@@ -46,15 +45,14 @@ final class VenueJsonMapper implements JsonMapper<JsonObject, List<Venue>> {
                 venues.add(new VenueBuilder()
                         .withId(venue.get("id").getAsString())
                         .withName(venue.get("name").getAsString())
-                        .withUrl(validate(venue.get("url")))
                         .withIsOpen(venue.get("hours") != null ? venue.get("hours").getAsJsonObject().get("isOpen").getAsBoolean() : false)
                         .withCategory(validate(category.get("name")))
                         .withContactDetails(new VenueContactDetailsBuilder()
-                                .withPhoneNumber(validate(contact.get("formattedPhone")))
-                                .withTwitterHandle(validate(contact.get("twitter")))
+                                .withPhone(validate(contact.get("formattedPhone")))
+                                .withWebsite(validate(venue.get("url")))
                                 .build())
                         .withAddress(new VenueAddressBuilder()
-                                .withAddress(validate(location.get("address")))
+                                .withStreet(validate(location.get("address")))
                                 .withCity(validate(location.get("city")))
                                 .withCountry(validate(location.get("country")))
                                 .build())
@@ -67,7 +65,4 @@ final class VenueJsonMapper implements JsonMapper<JsonObject, List<Venue>> {
         }
     }
 
-    private static String validate(JsonElement jsonElement) {
-        return jsonElement == null ? EMPTY_STRING : jsonElement.getAsString();
-    }
 }

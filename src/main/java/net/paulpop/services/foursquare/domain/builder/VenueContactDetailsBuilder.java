@@ -7,23 +7,23 @@ import net.paulpop.services.foursquare.domain.VenueContactDetails;
  */
 public class VenueContactDetailsBuilder {
 
-    private String phoneNumber;
-    private String twitterHandle;
+    private String phone;
+    private String website;
 
-    public VenueContactDetailsBuilder withPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public VenueContactDetailsBuilder withPhone(String phone) {
+        this.phone = phone;
         return this;
     }
 
-    public VenueContactDetailsBuilder withTwitterHandle(String twitterHandle) {
-        this.twitterHandle = twitterHandle;
+    public VenueContactDetailsBuilder withWebsite(String website) {
+        this.website = website;
         return this;
     }
 
     public VenueContactDetails build() {
         VenueContactDetails venueContactDetails = new VenueContactDetails();
-        venueContactDetails.setPhoneNumber(phoneNumber);
-        venueContactDetails.setTwitterHandle(twitterHandle);
+        venueContactDetails.setPhone(phone);
+        venueContactDetails.setWebsite(website);
         return venueContactDetails;
     }
 }

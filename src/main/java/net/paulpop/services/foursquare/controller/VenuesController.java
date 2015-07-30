@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class VenuesController extends AbstractController<VenuesResponse> {
 
     @RequestMapping(method = RequestMethod.GET, value = "/search/rest", produces = "application/json")
-    public String searchVenues(@RequestParam("place") String place,
+    public final String searchVenues(@RequestParam("place") String place,
                           @RequestParam("radius") Integer radius,
                           @RequestParam("limit") Integer limit) {
 
@@ -27,7 +27,7 @@ public class VenuesController extends AbstractController<VenuesResponse> {
         try {
             response = service.explore(place, radius, limit);
         } catch (FoursquareException e) {
-            System.err.println(e); // seeing we don't have logging, we'll just stderr it
+            System.err.println(e.toString()); // seeing we don't have logging, we'll just stderr it
 
             response = generateErrorResponse(e);
         }

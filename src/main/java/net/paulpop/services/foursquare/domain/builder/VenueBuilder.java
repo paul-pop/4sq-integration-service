@@ -15,7 +15,6 @@ public class VenueBuilder {
     private VenueContactDetails contactDetails;
     private VenueAddress address;
     private boolean isOpen;
-    private String url;
 
     public VenueBuilder withId(String id) {
         this.id = id;
@@ -47,11 +46,6 @@ public class VenueBuilder {
         return this;
     }
 
-    public VenueBuilder withUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
     public Venue build() {
         Venue venue = new Venue();
         venue.setId(id);
@@ -60,7 +54,6 @@ public class VenueBuilder {
         venue.setContactDetails(contactDetails);
         venue.setAddress(address);
         venue.setIsOpen(isOpen);
-        venue.setUrl(url);
         return venue;
     }
 }

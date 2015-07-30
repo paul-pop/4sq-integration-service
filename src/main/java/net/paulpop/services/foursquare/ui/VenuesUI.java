@@ -4,15 +4,14 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Validator;
 import com.vaadin.data.validator.StringLengthValidator;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import net.paulpop.services.foursquare.domain.Venue;
-import net.paulpop.services.foursquare.domain.VenueAddress;
-import net.paulpop.services.foursquare.domain.VenueContactDetails;
 import net.paulpop.services.foursquare.domain.VenuesResponse;
 import net.paulpop.services.foursquare.exception.FoursquareException;
 import net.paulpop.services.foursquare.service.FoursquareIntegrationService;
@@ -52,9 +51,6 @@ final class VenuesUI extends UI {
         HorizontalLayout hl1 = new HorizontalLayout();
         HorizontalLayout hl2 = new HorizontalLayout();
 
-        hl1.setMargin(false);
-        hl2.setMargin(false);
-
         // Create the field for place and add validator
         TextField tf = new TextField("Place");
         tf.addStyleName(ValoTheme.TEXTFIELD_TINY);
@@ -72,6 +68,7 @@ final class VenuesUI extends UI {
         cb1.setWidth(90, Unit.PIXELS);
         cb1.setValue(radius.get());
         cb1.setImmediate(true);
+        cb1.setNullSelectionAllowed(false);
         cb1.addValueChangeListener(event -> radius.set((Integer) event.getProperty().getValue()));
 
         // Create the dropdown for limit with predefined values
@@ -82,20 +79,24 @@ final class VenuesUI extends UI {
         cb2.setWidth(90, Unit.PIXELS);
         cb2.setValue(limit.get());
         cb2.setImmediate(true);
+        cb2.setNullSelectionAllowed(false);
         cb2.addValueChangeListener(event -> limit.set((Integer) event.getProperty().getValue()));
 
         // Create table, set headers and table properties
-        Table t = new Table("Places nearby", null);
-        t.addStyleName(ValoTheme.TABLE_COMPACT);
+        Table t = new Table("Nearby places", null);
+        t.addStyleName(ValoTheme.TABLE_SMALL);
         t.setSizeFull();
         t.setVisible(false);
-        t.addContainerProperty("ID", String.class, null);
+        t.setSelectable(true);
         t.addContainerProperty("Name", String.class, null);
         t.addContainerProperty("Category", String.class, null);
-        t.addContainerProperty("Contact", VenueContactDetails.class, null);
-        t.addContainerProperty("Address", VenueAddress.class, null);
-        t.addContainerProperty("Open?", String.class, null);
-        t.addContainerProperty("Short URL", String.class, null);
+        t.addContainerProperty("Open now?", String.class, null);
+        t.addContainerProperty("Phone Number", String.class, null);
+        t.addContainerProperty("Website", String.class, null);
+        t.addContainerProperty("Address", String.class, null);
+        t.addContainerProperty("City", String.class, null);
+        t.addContainerProperty("Country", String.class, null);
+        t.setColumnExpandRatio(null, 1);
 
         // Create search button and attach a click action to it
         Button btn = new Button("Search");
@@ -109,7 +110,7 @@ final class VenuesUI extends UI {
                 cb1.validate();
                 cb2.validate();
 
-                // If everything is ok, make the table visibile, purge previous data and display new data
+                // If everything is ok, make the table visible, purge previous data and display new data
                 try {
                     VenuesResponse venuesResponse = service.explore(tf.getValue(),
                             Integer.valueOf(cb1.getValue().toString()),
@@ -119,37 +120,32 @@ final class VenuesUI extends UI {
                         t.setVisible(true);
 
                         List<Venue> venues = venuesResponse.getVenues();
-                        venues.forEach(venue -> {
-                            t.addItem(new Object[]{venue.getId(), venue.getName(), venue.getCategory(),
-                                    venue.getContactDetails(), venue.getAddress(),
-                                    venue.getIsOpen() ? "Yes" : "No", venue.getUrl()}, null);
-                        });
+                        venues.stream().forEach(venue -> t.addItem(new Object[]{
+                                venue.getName(), venue.getCategory(), venue.getIsOpen() ? "Yes" : "No",
+                                venue.getContactDetails().getPhone(), venue.getContactDetails().getWebsite(),
+                                venue.getAddress().getStreet(), venue.getAddress().getCity(), venue.getAddress().getCountry()
+                        }, null));
                     } else {
                         // If no venues were found, don't display the table and show a warning
                         t.setVisible(false);
                         Notification.show("No venues found, try expanding your search!", Notification.Type.WARNING_MESSAGE);
                     }
                 } catch (FoursquareException e) {
-                    Notification.show("An error occured when trying to retrieve the data", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("An error occurred when trying to retrieve the data", Notification.Type.ERROR_MESSAGE);
                 }
             } catch (Validator.InvalidValueException e) {
                 Notification.show("Values are invalid, please re-check.", Notification.Type.ERROR_MESSAGE);
             }
         });
 
+        // Add a shortcut to the main text field, when you press ENTER the search is triggered
+        tf.addShortcutListener(new Button.ClickShortcut(btn, ShortcutAction.KeyCode.ENTER, null));
+
         hl1.addComponent(new FormLayout(tf, cb1, cb2, btn));
         hl2.addComponent(t);
 
-        vl.addComponents(getTitle(), hl1, hl2);
+        vl.addComponents(hl1, hl2);
         setContent(vl);
-    }
-
-    private Label getTitle() {
-        Label l = new Label();
-        l.setContentMode(ContentMode.HTML);
-        l.setStyleName(ValoTheme.LABEL_H3);
-        l.setValue(FontAwesome.FOURSQUARE.getHtml() + " AND 4sq integration");
-        return l;
     }
 
 }
