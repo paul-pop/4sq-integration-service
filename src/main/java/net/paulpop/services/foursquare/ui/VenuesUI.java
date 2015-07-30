@@ -8,6 +8,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -37,19 +38,21 @@ final class VenuesUI extends UI {
     @Value("#{'${ui.radius.values}'.split(',')}")
     private List<Integer> radiusValues;
 
+    @Value("${ui.limit.default}")
+    private int limitDefault;
+
+    @Value("${ui.radius.default}")
+    private int radiusDefault;
+
     // default values, needs to be atomic if multiple users do search at the same time
-    private AtomicInteger limit = new AtomicInteger(20);
-    private AtomicInteger radius = new AtomicInteger(100);
 
     @Autowired
     private FoursquareIntegrationService service;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        // Create main page layout
-        VerticalLayout vl = new VerticalLayout();
-        HorizontalLayout hl1 = new HorizontalLayout();
-        HorizontalLayout hl2 = new HorizontalLayout();
+        AtomicInteger limit = new AtomicInteger(limitDefault);
+        AtomicInteger radius = new AtomicInteger(radiusDefault);
 
         // Create the field for place and add validator
         TextField tf = new TextField("Place");
@@ -60,7 +63,7 @@ final class VenuesUI extends UI {
         tf.addValidator(new StringLengthValidator("The place must have at least 2 characters", 2, 1000, false));
         tf.setImmediate(true);
 
-        // Create the field for radius
+        // Create the dropdown for radius with predefined values
         ComboBox cb1 = new ComboBox("Radius (in meters)", radiusValues);
         cb1.addStyleName(ValoTheme.COMBOBOX_TINY);
         cb1.addStyleName(ValoTheme.COMBOBOX_ALIGN_RIGHT);
@@ -141,9 +144,15 @@ final class VenuesUI extends UI {
         // Add a shortcut to the main text field, when you press ENTER the search is triggered
         tf.addShortcutListener(new Button.ClickShortcut(btn, ShortcutAction.KeyCode.ENTER, null));
 
-        hl1.addComponent(new FormLayout(tf, cb1, cb2, btn));
-        hl2.addComponent(t);
 
+        // Create main page layout
+        HorizontalLayout hl1 = new HorizontalLayout();
+        hl1.addComponent(new FormLayout(tf, cb1, cb2, btn));
+        HorizontalLayout hl2 = new HorizontalLayout();
+        hl2.addComponent(t);
+        hl2.setSizeFull();
+
+        VerticalLayout vl = new VerticalLayout();
         vl.addComponents(hl1, hl2);
         setContent(vl);
     }

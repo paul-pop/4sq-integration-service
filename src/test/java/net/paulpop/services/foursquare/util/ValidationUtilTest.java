@@ -1,16 +1,34 @@
 package net.paulpop.services.foursquare.util;
 
+import com.google.gson.JsonElement;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.testng.PowerMockTestCase;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.assertEquals;
 
 /**
  * Created by popp on 28/07/15.
  */
-public class ValidationUtilTest {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({JsonElement.class})
+public class ValidationUtilTest extends PowerMockTestCase {
+
+    @Mock private JsonElement jsonElement;
+
+    @BeforeClass
+    public void beforeClass() {
+        initMocks(this);
+    }
 
     @Test(dataProvider = "mandatoryValues")
     public void testMandatory_OK(Object o) {
@@ -30,6 +48,17 @@ public class ValidationUtilTest {
     @Test
     public void testNvl_OK() {
         assertEquals(ValidationUtil.nvl("string1", "string2"), "string1");
+    }
+
+    @Test
+    public void testValidate_Null() {
+        assertEquals(ValidationUtil.validate(null), "");
+    }
+
+    @Test
+    public void testValidate_OK() {
+        when(jsonElement.getAsString()).thenReturn("X");
+        assertEquals(ValidationUtil.validate(jsonElement), "X");
     }
 
     @DataProvider
