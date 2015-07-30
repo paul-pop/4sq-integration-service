@@ -33,12 +33,12 @@ java -jar target/4sq-integration-service-1.0.jar
 ## Run
 Once the application is started, you can go to:
 * **UI**: ```http://localhost:8080/venues/search```
-* **REST API** sample call: ```http://localhost:8080/venues/search/rest?place=London&radius=100&limit=10```
+* **REST API** sample call: ```http://localhost:8080/venues/search/rest?place=London&radius=200&limit=10```
 
 ## Tests
 For the sake of this exercise and time, I have only provided unit tests which are run at build time.
 I have used TestNG as my main testing framework but also made use of Mockito and PowerMock for mocking and Spring Test
 for Reflection Utils - setting values to @Value annotated fields.
 
-**Note**: I have only wrote unit tests for classes that I thought are worth it.
-I skipped POJOs/Builders and the main Application class. Also, the UI bit is not unit tested because of lack of time.
+**Note**: I have only wrote unit tests for classes that I thought are worth it, so I skipped POJOs/Builders and
+the main Application class. There are no UI tests.

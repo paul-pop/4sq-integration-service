@@ -28,7 +28,6 @@ public class VenuesController extends AbstractController<VenuesResponse> {
             response = service.explore(place, radius, limit);
         } catch (FoursquareException e) {
             System.err.println(e.toString()); // seeing we don't have logging, we'll just stderr it
-
             response = generateErrorResponse(e);
         }
 

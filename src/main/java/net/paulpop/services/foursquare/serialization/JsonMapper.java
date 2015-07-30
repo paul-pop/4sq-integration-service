@@ -3,7 +3,7 @@ package net.paulpop.services.foursquare.serialization;
 import net.paulpop.services.foursquare.exception.FoursquareException;
 
 /**
- * Mapper generic interface, used for mapping an already deserialized object into a domain model
+ * Mapper generic interface, used for mapping an already deserialized objects into a domain model
  *
  * Created by popp on 28/07/15.
  */

@@ -36,7 +36,7 @@ final class FoursquareIntegrationServiceImpl implements FoursquareIntegrationSer
 
     @Override
     public VenuesResponse explore(String near, Integer radius, Integer limit) throws FoursquareException {
-        // We use partial deserialization so we don't have to create object in our codebase for
+        // We use partial deserialization so we don't have to create objects in our codebase for
         // the entire Foursquare model
         String result = client.call(FoursquareOperation.EXPLORE, near, radius, limit);
         JsonObject json = jsonSerDeser.deserialize(result).getAsJsonObject();
