@@ -1,5 +1,6 @@
 package net.paulpop.services.foursquare.serialization;
 
+import net.paulpop.services.foursquare.exception.FoursquareException;
 import org.mockito.InjectMocks;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -26,13 +27,6 @@ public class JsonSerDeserTest {
     }
 
     @Test
-    public void testSerialize_O1K() {
-        String result = jsonSerDeser.serialize(obj);
-
-        assertEquals(result, StubObject.OBJ);
-    }
-
-    @Test
     public void testSerialize_OK() {
         String result = jsonSerDeser.serialize(obj);
 
@@ -47,7 +41,7 @@ public class JsonSerDeserTest {
     }
 
     @Test
-    public void testDeserialize_OK() {
+    public void testDeserialize_OK() throws FoursquareException {
         StubObject result = jsonSerDeser.deserialize(StubObject.OBJ, StubObject.class);
 
         assertEquals(result.field1, 1);
@@ -55,10 +49,15 @@ public class JsonSerDeserTest {
     }
 
     @Test
-    public void testDeserialize_FAIL() {
+    public void testDeserialize_FAIL() throws FoursquareException {
         StubObject result = jsonSerDeser.deserialize(null, StubObject.class);
 
         assertNull(result);
+    }
+
+    @Test(expectedExceptions = FoursquareException.class)
+    public void testDeserialize_FAIL_ThrowsException() throws FoursquareException {
+        jsonSerDeser.deserialize("<html>", StubObject.class);
     }
 
     /**

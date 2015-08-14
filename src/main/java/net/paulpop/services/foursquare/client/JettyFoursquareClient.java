@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -42,12 +41,15 @@ public final class JettyFoursquareClient extends AbstractFoursquareClient {
         httpClient = new HttpClient(sslContextFactory);
         httpClient.setFollowRedirects(false); // bypass redirects
         httpClient.start(); // working with default executor - QueuedThreadPool of 200 threads
+
+        logger.info("*** HttpClient initialised ***");
     }
 
     @Override
-    @PreDestroy
-    void stop() throws Exception {
+    void terminate() throws Exception {
         httpClient.stop();
+
+        logger.info("*** HttpClient absolutely destroyed! ***");
     }
 
     /**

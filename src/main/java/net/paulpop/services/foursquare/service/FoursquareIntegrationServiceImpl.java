@@ -52,12 +52,11 @@ final class FoursquareIntegrationServiceImpl implements FoursquareIntegrationSer
         }
 
         List<Venue> venues = jsonMapper.map(deserializedResult.getResponse());
-
-        // This means the response was OK and deserialization passed so we return 200
         VenuesResponse response = new VenuesResponse();
         response.setResponseCode(200);
         response.setVenues(venues);
         return response;
+
     }
 
 }

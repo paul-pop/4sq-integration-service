@@ -1,7 +1,13 @@
 package net.paulpop.services.foursquare.serialization;
 
 import com.google.gson.Gson;
+import net.paulpop.services.foursquare.exception.FoursquareException;
+import net.paulpop.services.foursquare.exception.FoursquareExceptionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+
+import static net.paulpop.services.foursquare.exception.FoursquareExceptionFactory.GENERIC_ERROR;
 
 /**
  * Utility class used for serialization and deserialization via Gson.
@@ -11,6 +17,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JsonSerDeser<T> {
+
+    private static final Logger logger = LoggerFactory.getLogger(JsonSerDeser.class);
 
     // We just need this one instance of GSON for everything
     private final Gson gson = new Gson();
@@ -32,8 +40,13 @@ public class JsonSerDeser<T> {
      * @param clz
      * @return
      */
-    public T deserialize(String source, Class<T> clz) {
-        return gson.fromJson(source, clz);
+    public T deserialize(String source, Class<T> clz) throws FoursquareException {
+        try {
+            return gson.fromJson(source, clz);
+        } catch (Exception e) {
+            logger.warn("Failed to un-marshall: {} ", source);
+            throw FoursquareExceptionFactory.getInstance().create(500, GENERIC_ERROR, null);
+        }
     }
 
 }

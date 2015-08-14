@@ -56,7 +56,7 @@ public class JettyFoursquareClientTest {
     @Test(priority = 1)
     public void testInitAndDestroy() throws Exception {
         client.start();
-        client.stop();
+        client.terminate();
 
         assert true;
     }

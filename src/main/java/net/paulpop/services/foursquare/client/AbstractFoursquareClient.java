@@ -33,9 +33,9 @@ abstract class AbstractFoursquareClient {
     abstract void start() throws Exception;
 
     /**
-     * Enforce client termination, preferably by using {@link javax.annotation.PreDestroy}
+     * Enforce client termination, preferably as part of a shutdown hook.
      *
      * @throws Exception
      */
-    abstract void stop() throws Exception;
+    abstract void terminate() throws Exception;
 }
