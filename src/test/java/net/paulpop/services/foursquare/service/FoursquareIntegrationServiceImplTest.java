@@ -1,12 +1,10 @@
 package net.paulpop.services.foursquare.service;
 
 import com.google.common.collect.Lists;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
 import net.paulpop.services.foursquare.client.JettyFoursquareClient;
 import net.paulpop.services.foursquare.domain.Venue;
 import net.paulpop.services.foursquare.domain.VenuesResponse;
+import net.paulpop.services.foursquare.domain.external.FoursquareRoot;
 import net.paulpop.services.foursquare.exception.FoursquareException;
 import net.paulpop.services.foursquare.exception.FoursquareExceptionFactory;
 import net.paulpop.services.foursquare.serialization.JsonMapper;
@@ -31,21 +29,16 @@ import static org.testng.Assert.*;
  * Created by popp on 29/07/15.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({JettyFoursquareClient.class, JsonObject.class})
+@PrepareForTest({JettyFoursquareClient.class, FoursquareRoot.class})
 public class FoursquareIntegrationServiceImplTest extends PowerMockTestCase {
 
-    @Mock private JsonElement mainJsonElement;
-    @Mock private JsonObject mainJsonObject;
-    @Mock private JsonElement metaJsonElement;
-    @Mock private JsonObject metaJsonObject;
-
-    @Mock private JsonElement statusCodeElement;
-    @Mock private JsonElement errorTypeElement;
-    @Mock private JsonElement errorDetailElement;
+    @Mock private FoursquareRoot rootElement;
+    @Mock private FoursquareRoot.FoursquareResponse response;
+    @Mock private FoursquareRoot.FoursquareMeta metadata;
 
     @Mock private JettyFoursquareClient client;
-    @Mock private JsonSerDeser<VenuesResponse> jsonSerDeser;
-    @Mock private JsonMapper<JsonObject, List<Venue>> jsonMapper;
+    @Mock private JsonSerDeser<FoursquareRoot> jsonSerDeser;
+    @Mock private JsonMapper<FoursquareRoot.FoursquareResponse, List<Venue>> jsonMapper;
 
     @InjectMocks
     private FoursquareIntegrationServiceImpl service;
@@ -53,6 +46,9 @@ public class FoursquareIntegrationServiceImplTest extends PowerMockTestCase {
     @BeforeMethod
     public void beforeMethod() {
         initMocks(this);
+
+        when(rootElement.getMeta()).thenReturn(metadata);
+        when(rootElement.getResponse()).thenReturn(response);
     }
 
     @Test
@@ -60,15 +56,10 @@ public class FoursquareIntegrationServiceImplTest extends PowerMockTestCase {
         final int responseCode = 200;
         final String json = "{\"meta\":{\"code\":"+responseCode+"},\"response\":{}}";
 
-        when(statusCodeElement.getAsInt()).thenReturn(responseCode);
-        when(metaJsonObject.get("code")).thenReturn(statusCodeElement);
-        when(mainJsonElement.getAsJsonObject()).thenReturn(mainJsonObject);
-        when(metaJsonElement.getAsJsonObject()).thenReturn(metaJsonObject);
-        when(mainJsonObject.get("meta")).thenReturn(metaJsonElement);
-
         when(client.call(FoursquareOperation.EXPLORE, "London", 1, 1)).thenReturn(json);
-        when(jsonSerDeser.deserialize(json)).thenReturn(mainJsonElement);
-        when(jsonMapper.map(mainJsonObject)).thenReturn(Lists.newArrayList());
+        when(jsonSerDeser.deserialize(json, FoursquareRoot.class)).thenReturn(rootElement);
+        when(jsonMapper.map(response)).thenReturn(Lists.newArrayList());
+        when(metadata.getCode()).thenReturn(200);
 
         VenuesResponse result = service.explore("London", 1, 1);
 
@@ -86,19 +77,12 @@ public class FoursquareIntegrationServiceImplTest extends PowerMockTestCase {
         final FoursquareException ex = FoursquareExceptionFactory.getInstance().create(responseCode, errorType, errorDetail);
         final String json = "{\"meta\":{\"code\":"+responseCode+",\"errorType\":\""+errorType+"\",\"errorDetail\":\""+errorDetail+"\"}}";
 
-        when(statusCodeElement.getAsInt()).thenReturn(responseCode);
-        when(errorTypeElement.getAsString()).thenReturn(errorType);
-        when(errorDetailElement.getAsString()).thenReturn(errorDetail);
-        when(mainJsonObject.get("meta")).thenReturn(metaJsonElement);
-        when(metaJsonObject.get("code")).thenReturn(statusCodeElement);
-        when(metaJsonObject.get("errorType")).thenReturn(errorTypeElement);
-        when(metaJsonObject.get("errorDetail")).thenReturn(errorDetailElement);
-
-        when(metaJsonElement.getAsJsonObject()).thenReturn(metaJsonObject);
-        when(mainJsonElement.getAsJsonObject()).thenReturn(mainJsonObject);
+        when(metadata.getCode()).thenReturn(responseCode);
+        when(metadata.getErrorType()).thenReturn(errorType);
+        when(metadata.getErrorDetail()).thenReturn(errorDetail);
 
         when(client.call(FoursquareOperation.EXPLORE, "", 10, 10)).thenReturn(json);
-        when(jsonSerDeser.deserialize(json)).thenReturn(mainJsonElement);
+        when(jsonSerDeser.deserialize(json, FoursquareRoot.class)).thenReturn(rootElement);
 
         try {
             service.explore("", 10, 10);
@@ -111,7 +95,7 @@ public class FoursquareIntegrationServiceImplTest extends PowerMockTestCase {
 
     @Test
     public void testService_ThrowsExceptionOnCall() throws FoursquareException {
-        FoursquareException ex = FoursquareExceptionFactory.getInstance().create(400, "BAD_REQUEST", "details");
+        final FoursquareException ex = FoursquareExceptionFactory.getInstance().create(400, "BAD_REQUEST", "details");
         when(client.call(FoursquareOperation.EXPLORE, null, null, null)).thenThrow(ex);
 
         try {
@@ -127,7 +111,7 @@ public class FoursquareIntegrationServiceImplTest extends PowerMockTestCase {
     public void testService_ThrowsExceptionOnDeserialize() throws FoursquareException {
         final String json = "{}";
         when(client.call(FoursquareOperation.EXPLORE, null, null, null)).thenReturn(json);
-        when(jsonSerDeser.deserialize(json)).thenReturn(JsonNull.INSTANCE);
+        when(jsonSerDeser.deserialize(json, FoursquareRoot.class)).thenThrow(new IllegalStateException());
 
         try {
             service.explore(null, null, null);

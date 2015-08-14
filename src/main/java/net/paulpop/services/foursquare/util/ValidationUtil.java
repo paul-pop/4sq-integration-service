@@ -1,15 +1,11 @@
 package net.paulpop.services.foursquare.util;
 
-import com.google.gson.JsonElement;
-
 /**
  * Utility class used for simple validation.
  *
  * Created by popp on 28/07/15.
  */
 public final class ValidationUtil {
-
-    public static final String EMPTY_STRING = "";
 
     // Should not be instantiated as it will only contain static methods - this is to avoid invalid invocations
     private ValidationUtil() {}
@@ -35,15 +31,6 @@ public final class ValidationUtil {
      */
     public static <T> T nvl(T a, T b) {
         return a == null ? b : a;
-    }
-
-    /**
-     * Validates a JsonElement and gets the string value out of it
-     * @param jsonElement
-     * @return
-     */
-    public static String validate(JsonElement jsonElement) {
-        return jsonElement == null ? EMPTY_STRING : jsonElement.getAsString();
     }
 
 }

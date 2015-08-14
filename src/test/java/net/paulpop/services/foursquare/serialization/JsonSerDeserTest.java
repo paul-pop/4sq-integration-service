@@ -1,7 +1,5 @@
 package net.paulpop.services.foursquare.serialization;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
 import org.mockito.InjectMocks;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -61,21 +59,6 @@ public class JsonSerDeserTest {
         StubObject result = jsonSerDeser.deserialize(null, StubObject.class);
 
         assertNull(result);
-    }
-
-    @Test
-    public void testPartialDeserialize_OK() {
-        JsonElement result = jsonSerDeser.deserialize(StubObject.OBJ);
-
-        assertEquals(result.getAsJsonObject().get("field1").getAsInt(), 1);
-        assertEquals(result.getAsJsonObject().get("field2").getAsString(), "X");
-    }
-
-    @Test
-    public void testPartialDeserialize_FAIL() {
-        JsonElement result = jsonSerDeser.deserialize("invalid JSON");
-
-        assertEquals(result, JsonNull.INSTANCE);
     }
 
     /**

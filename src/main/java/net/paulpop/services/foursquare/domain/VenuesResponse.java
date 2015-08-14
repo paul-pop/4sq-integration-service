@@ -1,6 +1,7 @@
 package net.paulpop.services.foursquare.domain;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Wrapper around a list of venues returned in the response that also returns HTTP response codes/errors.
@@ -53,23 +54,16 @@ public class VenuesResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof VenuesResponse)) return false;
-
         VenuesResponse that = (VenuesResponse) o;
 
-        if (responseCode != that.responseCode) return false;
-        if (errorDetail != null ? !errorDetail.equals(that.errorDetail) : that.errorDetail != null) return false;
-        if (errorCode != null ? !errorCode.equals(that.errorCode) : that.errorCode != null) return false;
-        if (venues != null ? !venues.equals(that.venues) : that.venues != null) return false;
-
-        return true;
+        return Objects.equals(responseCode, that.responseCode) &&
+                Objects.equals(venues, that.venues) &&
+                Objects.equals(errorCode, that.errorCode) &&
+                Objects.equals(errorDetail, that.errorDetail);
     }
 
     @Override
     public int hashCode() {
-        int result = responseCode;
-        result = 31 * result + (errorCode != null ? errorCode.hashCode() : 0);
-        result = 31 * result + (errorDetail != null ? errorDetail.hashCode() : 0);
-        result = 31 * result + (venues != null ? venues.hashCode() : 0);
-        return result;
+        return Objects.hash(responseCode, venues, errorCode, errorDetail);
     }
 }

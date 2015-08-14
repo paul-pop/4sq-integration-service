@@ -12,7 +12,6 @@ import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.assertEquals;
 
@@ -48,17 +47,6 @@ public class ValidationUtilTest extends PowerMockTestCase {
     @Test
     public void testNvl_OK() {
         assertEquals(ValidationUtil.nvl("string1", "string2"), "string1");
-    }
-
-    @Test
-    public void testValidate_Null() {
-        assertEquals(ValidationUtil.validate(null), "");
-    }
-
-    @Test
-    public void testValidate_OK() {
-        when(jsonElement.getAsString()).thenReturn("X");
-        assertEquals(ValidationUtil.validate(jsonElement), "X");
     }
 
     @DataProvider

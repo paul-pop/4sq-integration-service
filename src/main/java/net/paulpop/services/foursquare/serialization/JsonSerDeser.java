@@ -1,6 +1,6 @@
 package net.paulpop.services.foursquare.serialization;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,9 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JsonSerDeser<T> {
 
-    // We just need this one instance of GSON and JsonParser for everything
+    // We just need this one instance of GSON for everything
     private final Gson gson = new Gson();
-    private final JsonParser parser = new JsonParser();
 
     /**
      * Serialize a given object to a JSON string.
@@ -35,20 +34,6 @@ public class JsonSerDeser<T> {
      */
     public T deserialize(String source, Class<T> clz) {
         return gson.fromJson(source, clz);
-    }
-
-    /**
-     * Partially deserialize specific information into a {@link com.google.gson.JsonElement}
-     *
-     * @param source
-     * @return
-     */
-    public JsonElement deserialize(String source) {
-        try {
-            return parser.parse(source);
-        } catch (JsonSyntaxException e) {
-            return JsonNull.INSTANCE;
-        }
     }
 
 }

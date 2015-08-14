@@ -1,5 +1,7 @@
 package net.paulpop.services.foursquare.domain;
 
+import java.util.Objects;
+
 /**
  * Created by popp on 28/07/15.
  */
@@ -28,20 +30,14 @@ public class VenueContactDetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof VenueContactDetails)) return false;
-
         VenueContactDetails that = (VenueContactDetails) o;
 
-        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-        if (website != null ? !website.equals(that.website) : that.website != null)
-            return false;
-
-        return true;
+        return Objects.equals(phone, that.phone) &&
+                Objects.equals(website, that.website);
     }
 
     @Override
     public int hashCode() {
-        int result = phone != null ? phone.hashCode() : 0;
-        result = 31 * result + (website != null ? website.hashCode() : 0);
-        return result;
+        return Objects.hash(phone, website);
     }
 }

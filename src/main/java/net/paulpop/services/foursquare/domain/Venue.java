@@ -1,5 +1,7 @@
 package net.paulpop.services.foursquare.domain;
 
+import java.util.Objects;
+
 /**
  * Created by popp on 28/07/15.
  */
@@ -8,9 +10,10 @@ public class Venue {
     private String id;
     private String name;
     private String category;
-    private boolean isOpen;
     private VenueContactDetails contactDetails;
     private VenueAddress address;
+    private boolean isOpen;
+
 
     public String getId() {
         return id;
@@ -64,28 +67,18 @@ public class Venue {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Venue)) return false;
+        Venue that = (Venue) o;
 
-        Venue venue = (Venue) o;
-
-        if (isOpen != venue.isOpen) return false;
-        if (address != null ? !address.equals(venue.address) : venue.address != null) return false;
-        if (category != null ? !category.equals(venue.category) : venue.category != null) return false;
-        if (contactDetails != null ? !contactDetails.equals(venue.contactDetails) : venue.contactDetails != null)
-            return false;
-        if (id != null ? !id.equals(venue.id) : venue.id != null) return false;
-        if (name != null ? !name.equals(venue.name) : venue.name != null) return false;
-
-        return true;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(contactDetails, that.contactDetails) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(isOpen, that.isOpen);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        result = 31 * result + (contactDetails != null ? contactDetails.hashCode() : 0);
-        result = 31 * result + (address != null ? address.hashCode() : 0);
-        result = 31 * result + (isOpen ? 1 : 0);
-        return result;
+        return Objects.hash(id, name, category, contactDetails, address, isOpen);
     }
 }
