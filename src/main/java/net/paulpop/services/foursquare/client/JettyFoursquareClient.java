@@ -17,6 +17,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import static net.paulpop.services.foursquare.exception.FoursquareExceptionFactory.GENERIC_ERROR;
 import static net.paulpop.services.foursquare.util.ValidationUtil.mandatory;
 
 /**
@@ -26,6 +27,8 @@ import static net.paulpop.services.foursquare.util.ValidationUtil.mandatory;
  */
 @Component
 public final class JettyFoursquareClient extends AbstractFoursquareClient {
+
+    private static final Logger logger = LoggerFactory.getLogger(JettyFoursquareClient.class);
 
     private HttpClient httpClient;
 
@@ -61,6 +64,7 @@ public final class JettyFoursquareClient extends AbstractFoursquareClient {
         // Build the GET request for the Foursquare API with the required params
         try {
             // TODO Ideally we should so some caching here so we avoid too many calls to the API
+            // TODO Also, NIO would work a lot better here than this blocking call
             ContentResponse response = httpClient.newRequest(endpoint + operation.getPath())
                     .method(HttpMethod.GET)
                     .timeout(timeout, TimeUnit.MILLISECONDS)
@@ -73,7 +77,8 @@ public final class JettyFoursquareClient extends AbstractFoursquareClient {
                     .send();
             return response.getContentAsString();
         } catch (IllegalArgumentException | InterruptedException | TimeoutException | ExecutionException e) {
-            throw FoursquareExceptionFactory.getInstance().create("An error occurred while calling the Foursquare API", e);
+            logger.error("An error occurred while calling the Foursquare API", e);
+            throw FoursquareExceptionFactory.getInstance().create(500, GENERIC_ERROR, null);
         }
     }
 
