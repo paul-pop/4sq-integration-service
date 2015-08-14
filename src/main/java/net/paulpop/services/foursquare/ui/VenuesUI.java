@@ -14,6 +14,8 @@ import net.paulpop.services.foursquare.domain.Venue;
 import net.paulpop.services.foursquare.domain.VenuesResponse;
 import net.paulpop.services.foursquare.exception.FoursquareException;
 import net.paulpop.services.foursquare.service.FoursquareIntegrationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -29,6 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Title("AND 4sq")
 @SpringUI(path = "/venues/search")
 final class VenuesUI extends UI {
+
+    private static final Logger logger = LoggerFactory.getLogger(VenuesUI.class);
 
     @Value("#{'${ui.limit.values}'.split(',')}")
     private List<Integer> limitValues;
@@ -132,7 +136,9 @@ final class VenuesUI extends UI {
                         Notification.show("No venues found, try expanding your search!", Notification.Type.WARNING_MESSAGE);
                     }
                 } catch (FoursquareException e) {
-                    Notification.show("An error occurred when trying to retrieve the data", Notification.Type.ERROR_MESSAGE);
+                    logger.warn(e.toString());
+
+                    Notification.show("(" + e.getErrorCode() +") An error occurred when trying to retrieve the data", Notification.Type.ERROR_MESSAGE);
                 }
             } catch (Validator.InvalidValueException e) {
                 Notification.show("Values are invalid, please re-check.", Notification.Type.ERROR_MESSAGE);

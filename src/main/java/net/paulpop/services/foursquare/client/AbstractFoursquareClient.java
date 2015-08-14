@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 /**
  * Abstract HTTP client that can be used across multiple client implementations (Jetty, Apache etc.)
+ * for both BIO and NIO implementations.
  *
  * Created by popp on 28/07/15.
  */

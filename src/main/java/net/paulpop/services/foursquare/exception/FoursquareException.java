@@ -15,13 +15,11 @@ public class FoursquareException extends Exception {
 
     // default modifier because only the factory can instantiate new exceptions
     FoursquareException(String message, Throwable cause) {
-        super("FoursquareException thrown with: message=" + message, cause);
+        super(message, cause);
     }
 
     // default modifier because only the factory can instantiate new exceptions
     FoursquareException(int responseCode, String errorCode, String errorDetail) {
-        super("FoursquareException thrown with: responseCode=" + responseCode + ",errorCode=" + errorCode + ",errorDetail=" + errorDetail);
-
         this.responseCode = responseCode;
         this.errorCode = errorCode;
         this.errorDetail = errorDetail;
@@ -53,5 +51,14 @@ public class FoursquareException extends Exception {
     @Override
     public int hashCode() {
         return Objects.hash(responseCode, errorCode, errorDetail);
+    }
+
+    @Override
+    public String toString() {
+        return "FoursquareException{" +
+                "responseCode=" + responseCode +
+                ", errorCode='" + errorCode + '\'' +
+                ", errorDetail='" + errorDetail + '\'' +
+                '}';
     }
 }

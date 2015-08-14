@@ -66,4 +66,14 @@ public class VenuesResponse {
     public int hashCode() {
         return Objects.hash(responseCode, venues, errorCode, errorDetail);
     }
+
+    @Override
+    public String toString() {
+        return "VenuesResponse{" +
+                "responseCode=" + responseCode +
+                ", venues=" + venues +
+                ", errorCode='" + errorCode + '\'' +
+                ", errorDetail='" + errorDetail + '\'' +
+                '}';
+    }
 }

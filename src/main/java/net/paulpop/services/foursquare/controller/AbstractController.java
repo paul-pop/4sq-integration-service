@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 abstract class AbstractController<T> {
 
     // No qualifier needed now but in case we have a different impl, we just update here
-    //@Qualifier("foursquareIntegrationServiceImpl")
+    // @Qualifier("foursquareIntegrationServiceImpl")
     @Autowired
     protected FoursquareIntegrationService service;
 

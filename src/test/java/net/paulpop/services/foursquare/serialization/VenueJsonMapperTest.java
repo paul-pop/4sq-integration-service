@@ -21,6 +21,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.fail;
+import static org.testng.AssertJUnit.assertEquals;
 
 /**
  * Created by popp on 29/07/15.
@@ -58,8 +59,8 @@ public class VenueJsonMapperTest extends PowerMockTestCase {
             mapper.map(response);
             fail("Should not be here!");
         } catch (FoursquareException e) {
-            assertTrue(e.getCause() instanceof RuntimeException);
-            assertTrue(e.getMessage().startsWith("Exception occurred when mapping data from Foursquare API"));
+            assertEquals(e.getResponseCode(), 500);
+            assertEquals(e.getErrorCode(), "UNEXPECTED_ERROR");
         } catch (Exception e) {
             fail("Should catch FoursquareException!");
         }

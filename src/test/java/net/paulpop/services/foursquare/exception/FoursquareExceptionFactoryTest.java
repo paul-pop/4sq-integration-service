@@ -1,7 +1,6 @@
 package net.paulpop.services.foursquare.exception;
 
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -12,9 +11,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
  */
 public class FoursquareExceptionFactoryTest {
 
-    @Mock private FoursquareException ex1;
-    @Mock private FoursquareException ex2;
-
     @InjectMocks
     private FoursquareExceptionFactory factory;
 
@@ -23,12 +19,7 @@ public class FoursquareExceptionFactoryTest {
         initMocks(this);
     }
 
-    @Test(expectedExceptions = FoursquareException.class, expectedExceptionsMessageRegExp = "Exception")
-    public void testCreateException_Simple() throws Exception {
-        throw factory.create("Exception", new RuntimeException());
-    }
-
-    @Test(expectedExceptions = FoursquareException.class, expectedExceptionsMessageRegExp = ".*FoursquareException.*")
+    @Test(expectedExceptions = FoursquareException.class)
     public void testCreateException_Detailed() throws Exception {
         throw factory.create(400, "BAD_REQUEST", "Details");
     }

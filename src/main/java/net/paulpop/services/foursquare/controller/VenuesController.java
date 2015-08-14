@@ -2,6 +2,8 @@ package net.paulpop.services.foursquare.controller;
 
 import net.paulpop.services.foursquare.domain.VenuesResponse;
 import net.paulpop.services.foursquare.exception.FoursquareException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,17 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/venues")
 public class VenuesController extends AbstractController<VenuesResponse> {
 
+    private static final Logger logger = LoggerFactory.getLogger(VenuesController.class);
+
+    // We set the fields to required = false because we don't want Spring MVC to deal with empty params.
+    // We deal with them ourselves
     @RequestMapping(method = RequestMethod.GET, value = "/search/rest", produces = "application/json")
-    public final String searchVenues(@RequestParam("place") String place,
-                          @RequestParam("radius") Integer radius,
-                          @RequestParam("limit") Integer limit) {
+    public final String searchVenues(@RequestParam(value = "place", required = false) String place,
+                          @RequestParam(value = "radius", required = false) Integer radius,
+                          @RequestParam(value = "limit", required = false) Integer limit) {
 
         VenuesResponse response;
         try {
             response = service.explore(place, radius, limit);
         } catch (FoursquareException e) {
-            System.err.println(e.toString()); // seeing we don't have logging, we'll just stderr it
             response = generateErrorResponse(e);
+            logger.warn(response.toString());
         }
 
         return serialize(response);

@@ -1,10 +1,13 @@
-ANDigital Fourquare Integration
-===============================
+Fourquare Integration
+=====================
 
 ## Summary
 This application is built as both a usable REST API (JSON only at this stage) but also has a web interface on top of it.
 I would not do this normally and have them separated, but I felt that just building this for a website would ruin the fun
 for me so I have also built it for developers who want to be able to integrate with it.
+
+I have omitted some things because of time constraints: caching results retrieved from the API and making the call
+to the API non-blocking (using Jetty's async client).
 
 Also, a lot of things are extremely extensible and I have used a lot of interfaces/abstract classes together with generics
 just to showcase how I would normally build this - despite the fact that I know it's over-engineered for this particular case :)

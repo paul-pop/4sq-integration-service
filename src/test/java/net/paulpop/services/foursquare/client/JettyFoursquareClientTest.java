@@ -68,8 +68,8 @@ public class JettyFoursquareClientTest {
         when(request.param("near", "abc")).thenReturn(request);
         when(request.param("radius", "10")).thenReturn(request);
         when(request.param("limit", "10")).thenReturn(request);
-        when(response.getContentAsString()).thenReturn(json);
         when(request.send()).thenReturn(response);
+        when(response.getContentAsString()).thenReturn(json);
         when(httpClient.newRequest(ENDPOINT + FoursquareOperation.EXPLORE.getPath())).thenReturn(request);
 
         //when
@@ -80,7 +80,7 @@ public class JettyFoursquareClientTest {
         assertEquals(result, json);
     }
 
-    @Test(expectedExceptions = FoursquareException.class, expectedExceptionsMessageRegExp = "An error occurred while calling the Foursquare API")
+    @Test(expectedExceptions = FoursquareException.class)
     public void testClient_InvalidParam() throws Exception {
         //given
         when(request.param("near", null)).thenReturn(request);
@@ -93,7 +93,7 @@ public class JettyFoursquareClientTest {
         client.call(FoursquareOperation.EXPLORE, null, null, null);
     }
 
-    @Test(expectedExceptions = FoursquareException.class, expectedExceptionsMessageRegExp = "An error occurred while calling the Foursquare API")
+    @Test(expectedExceptions = FoursquareException.class)
     public void testClient_FailedCall() throws Exception {
         //given
         when(request.param("near", "abc")).thenReturn(request);

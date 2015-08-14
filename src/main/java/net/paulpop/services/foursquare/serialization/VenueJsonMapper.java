@@ -10,10 +10,13 @@ import net.paulpop.services.foursquare.domain.external.FoursquareRoot;
 import net.paulpop.services.foursquare.domain.external.FoursquareVenue;
 import net.paulpop.services.foursquare.exception.FoursquareException;
 import net.paulpop.services.foursquare.exception.FoursquareExceptionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+import static net.paulpop.services.foursquare.exception.FoursquareExceptionFactory.GENERIC_ERROR;
 import static net.paulpop.services.foursquare.util.ValidationUtil.nvl;
 
 /**
@@ -24,6 +27,7 @@ import static net.paulpop.services.foursquare.util.ValidationUtil.nvl;
 @Component
 final class VenueJsonMapper implements JsonMapper<FoursquareRoot.FoursquareResponse, List<Venue>> {
 
+    private static final Logger logger = LoggerFactory.getLogger(VenueJsonMapper.class);
     private static final String EMPTY_STRING = "";
 
     /**
@@ -60,7 +64,8 @@ final class VenueJsonMapper implements JsonMapper<FoursquareRoot.FoursquareRespo
 
             return venues;
         } catch (Exception e) {
-            throw FoursquareExceptionFactory.getInstance().create("Exception occurred when mapping data from Foursquare API", e);
+            logger.warn("Exception occurred when mapping data from Foursquare API", e);
+            throw FoursquareExceptionFactory.getInstance().create(500, GENERIC_ERROR, null);
         }
     }
 
