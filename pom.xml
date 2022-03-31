@@ -24,7 +24,7 @@
 
         <spring.version>4.1.6.RELEASE</spring.version>
         <spring.vaadin.version>1.0.0.beta3</spring.vaadin.version>
-        <spring.boot.version>1.2.5.RELEASE</spring.boot.version>
+        <spring.boot.version>2.5.12</spring.boot.version>
 
         <mockito.version>1.10.19</mockito.version>
         <powermock.version>1.6.2</powermock.version>
