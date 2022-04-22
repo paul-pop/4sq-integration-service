@@ -22,7 +22,7 @@
         <gson.version>2.3.1</gson.version>
         <guava.version>18.0</guava.version>
 
-        <spring.version>4.1.6.RELEASE</spring.version>
+        <spring.version>5.3.19</spring.version>
         <spring.vaadin.version>1.0.0.beta3</spring.vaadin.version>
         <spring.boot.version>1.2.5.RELEASE</spring.boot.version>
 
